@@ -1,0 +1,21 @@
+app:
+  name: IngesAI
+  host: "0.0.0.0"
+  port: 8000
+
+llm:
+  provider: "microsoft"
+  model: "Phi-3-mini-128k-instruct"
+  temperature: 0.3
+  max_new_tokens: 256
+
+embedddig:
+  provider: "BAAI"
+  model: "llm-embedder"
+  dimension: 768
+
+storage:
+  vector_db:
+    provider: "milvus"
+    cluster: "Pranav_db"
+    collection: "IngestAI"
