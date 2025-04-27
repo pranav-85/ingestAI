@@ -6,7 +6,7 @@
 
 import sys
 import os
-
+import json
 # Add src to the system path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
@@ -116,10 +116,9 @@ def clean_response(response: str) -> str:
     Returns:
         str: The cleaned response.
     """
-    if "Answer:" in response:
-        # Split at 'Answer:' and take the part after it
-        cleaned = response.split("Answer:", 1)[1].strip()
-        return cleaned
-    else:
-        # If 'Answer:' not found, return the original or empty
-        return response.strip()
+    try:
+        data = json.loads(response)
+        return data.get("answer", "").strip()
+    except json.JSONDecodeError:
+        print("Failed to parse final answer.")
+        return ""

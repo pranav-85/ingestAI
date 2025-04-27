@@ -44,6 +44,6 @@ class IngestPipeline:
             context += chunk['text'] + "\n"
             
         prompt = search_prompt(query, context)
-        response = generate_response(prompt, max_new_tokens=180)
+        response = generate_response(prompt, max_new_tokens=350)
 
         return clean_response(response)
