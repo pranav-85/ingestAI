@@ -3,10 +3,16 @@
 
     This module contains the IngestPipeline class, responsible for orchestrating the entire ingestion process.
 """
+import sys
+import os
+
+# Add src to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from src.database.db_handler import retrieve_chunks
 from src.utils.model_runner import generate_response
 from src.utils.prompt_builder import search_prompt, finetune_prompt
+from src.utils.preprocessing import clean_response
 
 class IngestPipeline:
     def __init__(self):
@@ -27,13 +33,17 @@ class IngestPipeline:
         """
         # Step 1: Finetune the query for vector database search
         optimized_query = finetune_prompt(query)
-
+        print(f"Optimized Query: {optimized_query}")
         # Step 2: Retrieve relevant chunks from the database
-        chunks = retrieve_chunks(optimized_query)
-
+        response = retrieve_chunks(optimized_query)
+        print(f"Retrieved Chunks: {response}")
         # Step 3: Generate a response using the retrieved chunks
-        context = "\n".join(chunks)
-        prompt = search_prompt(query, context)
-        response = generate_response(prompt)
+        context = ""
 
-        return response
+        for chunk in response['data']:
+            context += chunk['text'] + "\n"
+            
+        prompt = search_prompt(query, context)
+        response = generate_response(prompt, max_new_tokens=180)
+
+        return clean_response(response)

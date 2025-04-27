@@ -17,7 +17,7 @@ import requests
 import json
 from typing import IO, List
 from dotenv import load_dotenv
-from src.utils.preprocessing import preprocess
+from src.utils.preprocessing import preprocess, text_to_embeddings
 from src.utils.load_config import load_milvus_config
 from src.utils.parse_file import parse_file
 
@@ -27,7 +27,7 @@ _config_cache = load_milvus_config()
 
 url = os.getenv("API_URL")
 headers = {
-    "Authorization": f"Bearer {os.getenv('API_KEY')}",
+    "Authorization": f"Bearer {os.getenv('API_BEARER_TOKEN')}",
     "Accept": "application/json",
     "Content-Type": "application/json"
 }
@@ -46,6 +46,7 @@ def upload_file(uploaded_file: IO[bytes]) -> bool:
     
     text = parse_file(uploaded_file, uploaded_file.name)
     chunks, embeddings = preprocess(text)
+
     
     for i in range(len(chunks)):
         pk = uploaded_file.name + "-" + str(i)
@@ -64,15 +65,15 @@ def upload_file(uploaded_file: IO[bytes]) -> bool:
             ]
         }
 
-        response = requests.post(url + 'insert', data=json.dumps(payload), header=headers)
-
+        response = requests.post(url + 'insert', data=json.dumps(payload), headers=headers)
+        
         if response.status_code == 200:
             print(f"File {filename} uploaded successfully.")
-            return True
         else:
             print(f"Failed to upload file {filename}. Status code: {response.status_code}")
+            return False
         
-    return False
+    return True
 
 def retrieve_chunks(query: str, top_k: int = 5) -> List[str]:
     """
@@ -85,21 +86,21 @@ def retrieve_chunks(query: str, top_k: int = 5) -> List[str]:
     Returns:
         list: A list of retrieved chunks.
     """
-    _, embeddings = preprocess([query])
+    embeddings = text_to_embeddings(query)
     payload = {
         "collectionName": f"{_config_cache['collection']}",
         "data": [embeddings[0]],
         "limit": top_k,
         "outputFields": ["primary_key", "text", "filename", "metadata"],
         "searchParams": {
-            "metric_type": "COSINE",
+            "metric_type": "IP",
             "params": {
                 "nprobe": 10
             }
         }
     }
-
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    
+    response = requests.post(url + 'search', headers=headers, data=json.dumps(payload))
 
     if response.status_code == 200:
         return response.json()

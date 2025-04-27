@@ -3,8 +3,14 @@
 
     This module contains various prompt templates for different tasks.
 """
+import sys
+import os
+
+# Add src to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
 import re
-from utils.model_runner import generate_response
+from src.utils.model_runner import generate_response
 
 def finetune_prompt(query: str) -> str:
     """
@@ -22,15 +28,14 @@ def finetune_prompt(query: str) -> str:
 
         User Query: {query}
 
-        Respond only with the formatted search query.
 
         Format:
-        <|startquery|>optimized search query here<|endquery|>
+        <|startquery|> optimzed search query here<|endquery|>
     """
 
     prompt = PROMPT_TEMPLATE.format(query=query)
-    response = generate_response(prompt)
-    
+    response = generate_response(prompt, max_new_tokens=140)
+    print(f"Response: {response}")
     return re.findall(r"<\|startquery\|>(.*?)<\|endquery\|>", response, re.DOTALL)[-1]
 
 def search_prompt(query: str, context: str) -> str:

@@ -9,13 +9,13 @@ llm:
   temperature: 0.3
   max_new_tokens: 256
 
-embedddig:
+embedder:
   provider: "BAAI"
   model: "llm-embedder"
   dimension: 768
 
 storage:
-  vector_db:
+  milvus:
     provider: "milvus"
     cluster: "Pranav_db"
     collection: "IngestAI"

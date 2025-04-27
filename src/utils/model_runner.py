@@ -5,6 +5,12 @@
 """
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
+import sys
+import os
+
+# Add src to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
 from src.utils.load_config import load_llm_config
 
 model_config = load_llm_config()
@@ -20,7 +26,7 @@ llm_model.to(device)
 
 llm_model.eval()
 
-def generate_response(prompt: str) -> str:
+def generate_response(prompt: str, max_new_tokens: int = model_config["max_new_tokens"]) -> str:
     """
     Generate an answer using a pre-trained model.
     
@@ -32,7 +38,7 @@ def generate_response(prompt: str) -> str:
     """
     inputs = llm_tokenizer(prompt, return_tensors="pt").to(llm_model.device)
 
-    outputs = llm_model.generate(**inputs, max_new_tokens=model_config["max_new_tokens"], do_sample=True, temperature=model_config["temperature"])
+    outputs = llm_model.generate(**inputs, max_new_tokens= max_new_tokens, do_sample=True, temperature=model_config["temperature"])
 
     decoded = llm_tokenizer.decode(outputs[0], skip_special_tokens=True)
 

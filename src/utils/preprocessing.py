@@ -3,6 +3,13 @@
     
     Contains funcitions for preprocessing text data.
 """
+
+import sys
+import os
+
+# Add src to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
 import torch
 import torch.nn.functional as F
 from typing import List, Tuple
@@ -19,9 +26,6 @@ embedding_model = AutoModelForCausalLM.from_pretrained(embedding_model_name, tru
 
 embedding_tokenizer = AutoTokenizer.from_pretrained(embedding_model_name, trust_remote_code=True)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-embedding_tokenizer.pad_token = embedding_tokenizer.eos_token
-embedding_tokenizer.padding_side = "right"
 
 embedding_model.to(device)
 
@@ -85,7 +89,7 @@ def text_to_embeddings(chunks: List[str]) -> List[List[float]]:
 
     return normalized_embeddings.cpu().numpy().tolist()
 
-def preprocess(text: str, chunk_size: int = 400, overlap: int = 50) -> List[Tuple[str, List[float]]]:
+def preprocess(text: str, chunk_size: int = 400, overlap: int = 50):
     """
     Preprocess the text by chunking and converting to embeddings.
     
@@ -99,4 +103,23 @@ def preprocess(text: str, chunk_size: int = 400, overlap: int = 50) -> List[Tupl
     """
     chunks = chunk_text(text, chunk_size, overlap)
     embeddings = text_to_embeddings(chunks)
-    return list(zip(chunks, embeddings))
+
+    return (chunks, embeddings)
+
+def clean_response(response: str) -> str:
+    """
+    Cleans the response by extracting text after 'Answer:'.
+
+    Args:
+        response (str): The response to be cleaned.
+
+    Returns:
+        str: The cleaned response.
+    """
+    if "Answer:" in response:
+        # Split at 'Answer:' and take the part after it
+        cleaned = response.split("Answer:", 1)[1].strip()
+        return cleaned
+    else:
+        # If 'Answer:' not found, return the original or empty
+        return response.strip()
