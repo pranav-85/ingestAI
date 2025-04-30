@@ -44,6 +44,7 @@ class IngestPipeline:
             context += chunk['text'] + "\n"
             
         prompt = search_prompt(query, context)
-        response = generate_response(prompt, max_new_tokens=350)
+        response = generate_response(prompt, max_new_tokens=250)
 
+        print(f"Model Response: {response}")
         return clean_response(response)

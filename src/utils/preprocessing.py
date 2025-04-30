@@ -3,7 +3,7 @@
     
     Contains funcitions for preprocessing text data.
 """
-
+import re
 import sys
 import os
 import json
@@ -117,8 +117,12 @@ def clean_response(response: str) -> str:
         str: The cleaned response.
     """
     try:
-        data = json.loads(response)
-        return data.get("answer", "").strip()
+        responses =  re.findall(r"\{[^{}]*\}", response, re.DOTALL)
+
+        data = json.loads(responses[1])
+        print(data)
+        return data.get("answer", "")
+    
     except json.JSONDecodeError:
         print("Failed to parse final answer.")
         return ""
