@@ -41,5 +41,6 @@ def generate_response(prompt: str, max_new_tokens: int = model_config["max_new_t
     outputs = llm_model.generate(**inputs, max_new_tokens= max_new_tokens, do_sample=True, temperature=model_config["temperature"])
 
     decoded = llm_tokenizer.decode(outputs[0], skip_special_tokens=True)
-
+    
+    print("Decoded output:", decoded)
     return decoded

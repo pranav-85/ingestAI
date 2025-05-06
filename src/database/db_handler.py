@@ -67,6 +67,7 @@ def upload_file(uploaded_file: IO[bytes]) -> bool:
 
         response = requests.post(url + 'insert', data=json.dumps(payload), headers=headers)
         
+        print(response.json())
         if response.status_code == 200:
             print(f"File {filename} uploaded successfully.")
         else:
@@ -101,6 +102,8 @@ def retrieve_chunks(query: str, top_k: int = 5) -> List[str]:
     }
     
     response = requests.post(url + 'search', headers=headers, data=json.dumps(payload))
+
+    print(response.json())
 
     if response.status_code == 200:
         return response.json()

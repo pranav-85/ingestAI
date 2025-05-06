@@ -74,6 +74,7 @@ def finetune_prompt(query: str) -> str:
 
     prompt = Template(BASE_TEMPLATE + PROMPT_TEMPLATE).render(query=query)
     response = generate_response(prompt, max_new_tokens=75)
+    print("Finetune Prompt Response:", response)
     return extract_optimized_query(response)
 
 def search_prompt(query: str, context: str) -> str:
@@ -112,5 +113,5 @@ def search_prompt(query: str, context: str) -> str:
     """
     
     prompt = Template(BASE_TEMPLATE + PROMPT_TEMPLATE).render(query=query, context=context)
-    
+
     return prompt

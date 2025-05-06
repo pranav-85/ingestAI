@@ -32,7 +32,7 @@ embedding_model.to(device)
 # Set the model to evaluation mode
 embedding_model.eval()
 
-def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> List[str]:
+def chunk_text(text: str, chunk_size: int = 256, overlap: int = 50) -> List[str]:
     """
     Splits the text into chunks of specified size with a given overlap.
     
@@ -86,7 +86,7 @@ def text_to_embeddings(chunks: List[str]) -> List[List[float]]:
     normalized_embeddings = F.normalize(mean_pooled, p=2, dim=1)
 
     print("Embedding shape:", len(normalized_embeddings), "x", len(normalized_embeddings[0]))
-
+    
     return normalized_embeddings.cpu().numpy().tolist()
 
 def preprocess(text: str, chunk_size: int = 400, overlap: int = 50):

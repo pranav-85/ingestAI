@@ -4,8 +4,8 @@ app:
   port: 8000
 
 llm:
-  provider: "microsoft"
-  model: "Phi-3-mini-128k-instruct"
+  provider: "tinyllama"
+  model: "tinyllama-1.1b-chat-v1.0"
   temperature: 0.3
   max_new_tokens: 256
 
