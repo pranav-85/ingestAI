@@ -80,7 +80,7 @@ cd ingestAI
 pip install -r requirements.txt
 pip install torch --index-url https://download.pytorch.org/whl/cu128
 ```
-**Note:** Change the `torch` installation command based on your **CUDA version**.
+> **Note:** Change the `torch` installation command based on your **CUDA version**.
 
 ### 3. Setup Zilliz Cloud Database
 Create a ccollection with the following schema:
