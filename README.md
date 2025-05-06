@@ -90,7 +90,7 @@ vector: FLOAT_VECTOR(768)
 text: VARCHAR(20,000)
 metadata: VARCHAR(1024)
 ```
-Note: Make sure to change the collection and cluster name in `config.yaml`.
+> Note: Make sure to change the collection and cluster name in `config.yaml`.
 
 ### 4. Configure environment variables
 
