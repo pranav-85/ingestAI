@@ -1,6 +1,15 @@
 # 🤖 IngestAI – Chat with Your Documents
 
-**IngestAI** is a Retrieval-Augmented Generation (RAG) application that lets users upload documents (PDF, DOCX, CSV, TXT) and ask natural language questions about them. It uses **semantic search** powered by vector embeddings stored in **Milvus Cloud**, and generates context-aware answers using **Phi-3 Mini 128K Instruct**.
+**IngestAI** is a Retrieval-Augmented Generation (RAG) application that enables users to upload and query multiple document types (`PDF`, `DOCX`, `CSV`, `TXT`) through natural language. It supports context-aware Q&A across **multiple documents at once**, making it ideal for deep information retrieval, analysis, and exploration.
+
+Unlike many document Q&A tools that rely on simple keyword-based search or limit responses to a single document, **IngestAI** implements a **generalized RAG system** that:
+
+- Uses **semantic vector search** to find the most relevant information, regardless of format or source
+- Retrieves top matching text chunks across **all uploaded documents**, not just one
+- Provides coherent, grounded responses using the **Phi-3 Mini 128K Instruct** model in a **4-bit quantized** form for fast, memory-efficient inference
+- Stores and manages vector embeddings efficiently using **Milvus Cloud**
+
+This architecture allows IngestAI to scale across various use cases — from document search and knowledge base assistants to research tools and internal Q&A bots — while maintaining fast response times and high contextual relevance.
 
 ---
 
@@ -11,7 +20,7 @@
 - 🧬 Generate embeddings using [`BAAI/llm-embedder`](https://huggingface.co/BAAI/llm-embedder)
 - 💾 Store vectors in **Milvus Cloud**
 - 🔍 Perform semantic search to retrieve top 5 relevant chunks
-- 🤖 Generate responses using **Phi-3 Mini 128K Instruct**
+- 🤖 Generate responses using **Phi-3 Mini 128K Instruct (4-bit quantized)**
 - 🎛️ Interactive UI via **Streamlit**
 
 ---
@@ -94,4 +103,4 @@ API_BEARER_TOKEN=<API_TOKEN_HERE>
 streamlit run sr/main/app.py
 ```
 
-> **Note:** Make sure to have at least **10 GB RAM GPU** available.
+> **Note:** Make sure to have at least **4 GB RAM GPU** available.
