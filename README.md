@@ -59,7 +59,7 @@ This architecture allows IngestAI to scale across various use cases — from doc
 | Frontend         | Streamlit                        |
 | Embedding Model  | `BAAI/llm-embedder`              |
 | Vector DB        | Milvus (via Zilliz Cloud)        |
-| LLM              | Phi-3 Mini 128K Instruct         |
+| LLM              | Phi-3 Mini 128K Instruct (4bit quantized)        |
 | Chunking Logic   | Custom (512 tokens, 50 overlap)  |
 | Deployment       | **Pending** (planned: GCP Cloud Run) |
 
