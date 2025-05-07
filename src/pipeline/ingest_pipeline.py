@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 from src.database.db_handler import retrieve_chunks
 from src.utils.model_runner import generate_response
 from src.utils.prompt_builder import search_prompt, finetune_prompt
-from src.utils.preprocessing import clean_response
+from src.utils.preprocessing import clean_response, structure_context
 
 class IngestPipeline:
     def __init__(self):
@@ -37,11 +37,9 @@ class IngestPipeline:
         # Step 2: Retrieve relevant chunks from the database
         response = retrieve_chunks(optimized_query)
         print(f"Retrieved Chunks: {response}")
-        # Step 3: Generate a response using the retrieved chunks
-        context = ""
-
-        for chunk in response['data']:
-            context += chunk['text'] + "\n"
+        
+        context = structure_context(response)
+        print(f"Structured Context: {context}")
             
         prompt = search_prompt(query, context)
         response = generate_response(prompt, max_new_tokens=250)

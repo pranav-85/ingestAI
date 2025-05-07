@@ -7,7 +7,7 @@ llm:
   provider: "microsoft"
   model: "Phi-3-mini-128k-instruct"
   temperature: 0.3
-  max_new_tokens: 256
+  max_new_tokens: 512
 
 embedder:
   provider: "BAAI"

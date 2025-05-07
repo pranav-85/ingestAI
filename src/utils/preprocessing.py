@@ -126,3 +126,20 @@ def clean_response(response: str) -> str:
     except json.JSONDecodeError:
         print("Failed to parse final answer.")
         return ""
+    
+def structure_context(response) -> str:
+    """
+    Structures the context by adding file names and chunk text.
+
+    Args:
+        context (str): The context to be structured.
+
+    Returns:
+        str: The structured context.
+    """
+
+    context = ""
+    for chunk in response['data']:
+        context += f"[Document: {chunk['filename']}]\n{chunk['text']}\n\n"
+
+    return context    
