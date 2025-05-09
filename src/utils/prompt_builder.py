@@ -90,7 +90,7 @@ def search_prompt(query: str, context: str) -> str:
 
         Instructions:
         - Use ONLY the provided context to answer the question.
-        - Begin with a concise summary of the answer in 1–2 sentences.
+        - Begin with a concise summary of the answer in 1-2 sentences.
         - Follow with evidence-based support by quoting or paraphrasing key statements from the context.
         - If the answer is based on multiple sources, mention that clearly (e.g., "According to multiple documents..." or cite filenames if available).
         - If appropriate, conclude with brief implications or insights.
@@ -98,7 +98,7 @@ def search_prompt(query: str, context: str) -> str:
 
         Style Guide:
         - Friendly and professional tone.
-        - Answer length: 180–220 words.
+        - Answer length: 180-220 words.
         - Write clearly and use natural, conversational language.
 
         Return your output strictly in the following JSON format:
