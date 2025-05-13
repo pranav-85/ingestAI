@@ -1,6 +1,6 @@
 import NewChatButton from "./NewChatButton";
 
-function Tabs({ activeTab, setActiveTab, isCollapsed, toggleSidebar, setChats, isSidebarCollapsed }) {
+function Tabs({ activeTab, setActiveTab, isCollapsed, toggleSidebar, setChats, isSidebarCollapsed, onNewChat}) {
     return (
         <div className="pl-1 rounded-r-md w-fit">
             <div className={`flex items-center justify-between ${isCollapsed ? 'justify-center' : ''} flex-wrap`}>
@@ -36,10 +36,8 @@ function Tabs({ activeTab, setActiveTab, isCollapsed, toggleSidebar, setChats, i
             
                 <div className="flex justify-start items-center space-x-2 mt-2">
                     <NewChatButton
-                        onClick={() =>
-                            setChats((prev) => [...prev, { name: `Chat ${prev.length + 1}` }])
-                        }
                         isCollapsed={isSidebarCollapsed}
+                        onClick={onNewChat}
                     />
                     {!isCollapsed && (<p className="text-white mt-1 font-[550]">New Chat</p>)}
                 </div>
